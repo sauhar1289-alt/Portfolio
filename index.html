@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harish Chand Saurabh — Product & Simulation Engineer</title>
+<meta name="description" content="Mechanical engineer specializing in CFD/FEA-driven product development — from concept and CAD through simulation, prototyping, and real-world validation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101418;
+    --paper:#eef1f2;
+    --panel:#f7f9fa;
+    --line:#c3ccd1;
+    --line-strong:#8b979e;
+    --accent:#0e8f8f;          /* teal — air / flow */
+    --accent-deep:#0a5c5c;
+    --flow:#2ca6a6;
+    --stress:#e8552d;
+    --muted:#5a6670;
+    --grid:#dde3e6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Archivo',system-ui,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;
+  }
+  .mono{font-family:'Spline Sans Mono',monospace}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  header.bar{position:sticky;top:0;z-index:50;background:rgba(238,241,242,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-strong)}
+  .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .sig{font-weight:800;letter-spacing:.02em;font-size:15px}
+  .sig span{color:var(--accent)}
+  nav a{font-family:'Spline Sans Mono',monospace;font-size:12.5px;color:var(--muted);text-decoration:none;margin-left:22px;text-transform:uppercase;letter-spacing:.04em}
+  nav a:hover{color:var(--ink)}
+  @media(max-width:640px){nav a{margin-left:14px;font-size:11px}.sig{font-size:13px}}
+
+  .hero{padding:70px 0 50px;position:relative}
+  .tag{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--accent-deep);letter-spacing:.14em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:22px}
+  .tag::before{content:"";width:34px;height:1px;background:var(--line-strong)}
+  h1{font-size:clamp(40px,7vw,74px);line-height:.98;font-weight:800;letter-spacing:-.02em;margin-bottom:24px}
+  h1 .thin{font-weight:400;color:var(--muted)}
+  .lede{font-size:clamp(16px,2vw,19px);max-width:62ch;color:#2b333b}
+  .lede b{color:var(--ink);font-weight:600}
+  .meta{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-family:'Spline Sans Mono',monospace;font-size:12.5px;background:var(--panel);border:1px solid var(--line);padding:7px 13px;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:.15s}
+  .chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+  .chip .k{color:var(--muted)}
+
+  .ticks{position:absolute;right:24px;top:66px;display:none}
+  @media(min-width:900px){.ticks{display:block}}
+
+  /* flow-field hero graphic */
+  .flowlines path{fill:none;stroke:var(--flow);stroke-width:1.2;opacity:.55}
+  .flowlines .obst{fill:none;stroke:var(--ink);stroke-width:1.6}
+  .flowlines .hot{stroke:var(--stress)}
+
+  section{padding:50px 0}
+  .shead{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;border-bottom:1px solid var(--line-strong);padding-bottom:12px}
+  .snum{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--accent)}
+  .shead h2{font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.01em}
+  .shead .rt{margin-left:auto;font-family:'Spline Sans Mono',monospace;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+  /* fit-note callout */
+  .note{border:1px solid var(--line-strong);border-left:3px solid var(--accent);background:var(--panel);padding:22px 26px;margin-top:8px}
+  .note p{font-size:15.5px;color:#2b333b;max-width:80ch}
+  .note p b{color:var(--accent-deep)}
+  .note .k{font-family:'Spline Sans Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);display:block;margin-bottom:8px}
+
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line-strong);background:var(--panel)}
+  .metric{padding:22px 18px;border-right:1px solid var(--line)}
+  .metric:last-child{border-right:none}
+  .metric .big{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;color:var(--accent-deep);line-height:1}
+  .metric .lbl{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:8px;display:block}
+  @media(max-width:720px){.metrics{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:none}.metric:nth-child(1),.metric:nth-child(2){border-bottom:1px solid var(--line)}}
+
+  .proj{display:grid;grid-template-columns:56px 1fr;border:1px solid var(--line-strong);background:var(--panel);margin-bottom:-1px;transition:.18s}
+  .proj:hover{background:#fff;box-shadow:6px 6px 0 rgba(14,143,143,.1)}
+  .proj.key{border-left:3px solid var(--accent)}
+  .proj .idx{border-right:1px solid var(--line);display:flex;align-items:flex-start;justify-content:center;padding-top:24px;font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--accent);background:linear-gradient(180deg,rgba(14,143,143,.07),transparent)}
+  .proj .body{padding:24px 26px}
+  .proj h3{font-size:19px;font-weight:700;margin-bottom:6px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .proj h3 .type{font-family:'Spline Sans Mono',monospace;font-size:10.5px;font-weight:500;color:#fff;background:var(--accent-deep);padding:3px 8px;letter-spacing:.06em;text-transform:uppercase}
+  .proj h3 .type.stress{background:var(--stress)}
+  .proj h3 .type.flow{background:var(--accent)}
+  .proj p{font-size:15px;color:#333c44;max-width:76ch}
+  .proj .rel{margin-top:10px;font-size:13px;color:var(--accent-deep);font-style:italic}
+  .proj .tools{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px}
+  .proj .tools span{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:3px 9px}
+  @media(max-width:560px){.proj{grid-template-columns:36px 1fr}.proj .body{padding:18px}}
+
+  .xp{border-left:2px solid var(--line-strong);margin-left:6px}
+  .job{position:relative;padding:0 0 30px 30px}
+  .job::before{content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;background:var(--paper);border:2px solid var(--accent);border-radius:50%}
+  .job.current::before{background:var(--accent)}
+  .job .role{font-size:17px;font-weight:700}
+  .job .org{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--accent-deep);margin-top:2px}
+  .job .when{font-family:'Spline Sans Mono',monospace;font-size:11.5px;color:var(--muted);margin:6px 0 12px;text-transform:uppercase;letter-spacing:.04em}
+  .job ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .job li{font-size:14.5px;color:#333c44;padding-left:18px;position:relative}
+  .job li::before{content:"—";position:absolute;left:0;color:var(--line-strong)}
+  .job li b{color:var(--accent-deep);font-weight:600}
+
+  .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .skgrp{border:1px solid var(--line-strong);background:var(--panel);padding:18px 20px}
+  .skgrp.pri{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+  .skgrp h4{font-family:'Spline Sans Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .skgrp .tagset{display:flex;flex-wrap:wrap;gap:6px}
+  .skgrp .tagset span{font-size:12.5px;background:var(--paper);border:1px solid var(--line);padding:4px 9px}
+  .skgrp .tagset span.core{border-color:var(--accent);color:var(--accent-deep);font-weight:600}
+
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:720px){.duo{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line-strong);background:var(--panel);padding:22px 24px}
+  .card h4{font-family:'Spline Sans Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:16px}
+  .edu-item{padding:12px 0;border-bottom:1px dashed var(--line)}
+  .edu-item:last-child{border-bottom:none}
+  .edu-item .deg{font-weight:700;font-size:15.5px}
+  .edu-item .sch{font-size:13.5px;color:var(--muted)}
+  .edu-item .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:3px}
+  .edu-item .cg{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--accent-deep);font-weight:600;white-space:nowrap}
+  .cert{font-size:14px;padding:9px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px}
+  .cert:last-child{border-bottom:none}
+  .cert::before{content:"✓";color:var(--accent);font-weight:700}
+  .cert .src{color:var(--muted);font-size:12.5px}
+
+  footer{background:var(--ink);color:#cfd6db;padding:58px 0 38px;margin-top:38px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-start}
+  footer h3{color:#fff;font-size:29px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+  footer .sub{color:#8894a0;font-size:14px;max-width:38ch}
+  .flinks{display:flex;flex-direction:column;gap:12px}
+  .flinks a{color:#cfd6db;text-decoration:none;font-family:'Spline Sans Mono',monospace;font-size:13.5px;display:flex;gap:10px;align-items:center;transition:.15s}
+  .flinks a:hover{color:#fff}
+  .flinks a .k{color:#5f6c78;min-width:70px}
+  .foot-note{width:100%;border-top:1px solid #262d35;margin-top:32px;padding-top:20px;font-family:'Spline Sans Mono',monospace;font-size:11px;color:#5f6c78;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto;transition:none!important}}
+  a:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="sig">HCS<span>.</span></div>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="ticks" aria-hidden="true">
+      <svg class="flowlines" width="150" height="120" viewBox="0 0 150 120">
+        <path d="M0 20 Q60 20 70 45 Q75 58 110 60"/>
+        <path d="M0 40 Q55 40 66 52 Q75 60 120 60"/>
+        <path d="M0 60 Q60 60 150 60" class="hot"/>
+        <path d="M0 80 Q55 80 66 68 Q75 60 120 60"/>
+        <path d="M0 100 Q60 100 70 75 Q75 62 110 60"/>
+        <circle class="obst" cx="72" cy="60" r="11"/>
+      </svg>
+    </div>
+    <span class="tag mono">Product &amp; Simulation Engineer · CFD / FEA</span>
+    <h1>Harish Chand<br>Saurabh<span class="thin">.</span></h1>
+    <p class="lede">Mechanical engineer with a foundation in <b>simulation-led design</b> — my M.Tech project work took concepts from CAD and CFD/FEA analysis to <b>3D-printed prototypes and experimental validation</b>, across airflow and pressure analysis, structural optimization, and durable implant design. I currently work as a <b>Deputy Manager at Volvo Trucks India</b>, where field and service engineering has taught me what makes hardware survive <b>real-world dust, vibration, failure, and service</b> — and given me a commercial view of cost and contracts. I want to bring both sides together and build physical products end to end.</p>
+    <div class="meta">
+      <span class="chip mono"><span class="k">now</span> Deputy Manager · Volvo Trucks India</span>
+      <a class="chip mono" href="mailto:sauhar1289@gmail.com"><span class="k">mail</span> sauhar1289@gmail.com</a>
+      <a class="chip mono" href="https://www.linkedin.com/in/harish-saurabh-14269a145/" target="_blank" rel="noopener"><span class="k">in</span> LinkedIn</a>
+      <a class="chip mono" href="tel:+917380342106"><span class="k">tel</span> +91 73803 42106</a>
+      <span class="chip mono"><span class="k">loc</span> Varanasi, India</span>
+    </div>
+  </section>
+
+  <section id="fit" style="padding-top:0">
+    <div class="note">
+      <span class="k mono">Why product engineering</span>
+      <p>I've spent two years close to hardware in the field — running root-cause and failure analysis, improving serviceability, and turning field data into decisions. That work sharpened how I think about <b>durability, maintainability, and real-world performance</b>, and my move into service commercials added a <b>business lens</b> — reading contracts, AMC P&amp;L, and cost trade-offs, so I understand that a design also has to be commercially realistic. But I want to be upstream, where the product is actually designed. My degree and project work are in <b>CFD/FEA-driven design and prototyping</b>, and that's the direction I'm deliberately moving toward: owning designs from concept → CAD → simulation → prototype → validation.</p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="shead">
+      <span class="snum mono">01</span>
+      <h2>Engineering Projects</h2>
+      <span class="rt">Concept → CAD → Sim → Prototype</span>
+    </div>
+
+    <div class="proj key">
+      <div class="idx mono">P-01</div>
+      <div class="body">
+        <h3>CFD Simulation of Centrifugal Pump <span class="type flow">CFD · Flow</span></h3>
+        <p>Ran CFD simulations in SimScale to study cavitation, flow rates, and pressure zones, then used the results to improve efficiency and reliability across varying fluid conditions — reading the physics rather than treating the solver as a black box.</p>
+        <div class="rel">Directly relevant: airflow paths, pressure loss, and CFD validation of geometry.</div>
+        <div class="tools mono"><span>SimScale</span><span>Cavitation</span><span>Pressure Loss</span><span>Flow Paths</span></div>
+      </div>
+    </div>
+
+    <div class="proj key">
+      <div class="idx mono">P-02</div>
+      <div class="body">
+        <h3>Cartilage–Menisci FEA + Prototype Validation <span class="type stress">FEA</span> <span class="type">Prototype</span></h3>
+        <p>Modeled femur, tibia, and articular cartilage in 3D CAD and ran FEA to map stress distribution, then built a full <b>experimental validation loop</b> — 3D-printing cartilage models with Functionally Graded Materials to mimic real tissue and test the design physically.</p>
+        <div class="rel">Directly relevant: taking a design beyond CAD — building, testing, and iterating.</div>
+        <div class="tools mono"><span>SolidWorks</span><span>ANSYS</span><span>FGM</span><span>3D Printing</span><span>Validation</span></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="idx mono">P-03</div>
+      <div class="body">
+        <h3>FEA Optimization of Hydraulic Excavator Bucket <span class="type stress">FEA · DFM</span></h3>
+        <p>Used ANSYS Workbench to locate critical stress zones and optimize the weight-to-strength ratio, redesigning bucket geometry for higher load capacity and durability under harsh, abrasive field conditions.</p>
+        <div class="rel">Relevant: structural integrity, weight/material optimization, rugged-environment design.</div>
+        <div class="tools mono"><span>ANSYS Workbench</span><span>Weight/Strength</span><span>DFM</span></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="idx mono">P-04</div>
+      <div class="body">
+        <h3>Stress &amp; Fatigue Analysis of Dental Implant <span class="type stress">Fatigue</span></h3>
+        <p>Designed an indigenous dental implant from scratch in AutoCAD and Creo, then ran fatigue and stress simulations under variable loading in ANSYS — driving material-selection decisions and longevity improvements from simulation evidence.</p>
+        <div class="rel">Relevant: fatigue life, variable loading, simulation-driven material choices.</div>
+        <div class="tools mono"><span>AutoCAD</span><span>Creo</span><span>ANSYS</span><span>Fatigue</span></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="idx mono">P-05</div>
+      <div class="body">
+        <h3>Mining Machinery Design Optimization <span class="type">Design</span></h3>
+        <p>Designed and optimized mining-machinery components in SolidWorks under a professor-led research project, cutting weight while improving maneuverability and structural performance.</p>
+        <div class="tools mono"><span>SolidWorks</span><span>Structural</span><span>Research</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="shead">
+      <span class="snum mono">02</span>
+      <h2>Field &amp; Engineering Experience</h2>
+      <span class="rt">Volvo Trucks India</span>
+    </div>
+    <p style="max-width:80ch;margin-bottom:24px;color:var(--muted);font-size:14.5px">Two years working directly with heavy-duty hardware in the field — the source of my instinct for durability, failure modes, and serviceability that this role calls for.</p>
+    <div class="xp">
+      <div class="job current">
+        <div class="role">Deputy Manager — Service Commercials</div>
+        <div class="org">Volvo Trucks India · Bangalore</div>
+        <div class="when">Dec 2025 – Present</div>
+        <ul>
+          <li><b>Failed-part analysis</b> and aftermarket business studies feeding reliability insight.</li>
+          <li><b>Contract and commercial ownership</b> — AMC agreements, P&amp;L analytics, and cost-benefit trade-offs behind service decisions.</li>
+          <li><b>Business-driven decision-making</b> — built Power BI dashboards (P&amp;L, productivity, billing) to turn data into cost and pricing calls; held claim quality <b>above 99%</b>.</li>
+          <li>Service parts audits and AMC cost-reduction across programs.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="role">Area Service Manager</div>
+        <div class="org">Volvo Trucks India · Gurgaon &amp; Jaipur</div>
+        <div class="when">Nov 2023 – Nov 2025</div>
+        <ul>
+          <li><b>Root-cause analysis of component and field failures</b> with 100% TFAR reporting compliance — diagnosing why hardware fails in service.</li>
+          <li>Cut vehicle turnaround from <b>44.7 to 25.7 days</b> through data-driven process analysis.</li>
+          <li>Ran feasibility studies and vendor benchmarking for mobile service vehicle deployment.</li>
+          <li>Achieved <b>98% customer satisfaction</b> and 88% restoration within 24 hours.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="role">Deputy Manager (Technical Training)</div>
+        <div class="org">Volvo Trucks India · Bangalore</div>
+        <div class="when">Jun 2024 – Nov 2024</div>
+        <ul>
+          <li>Trained across mechanical and electrical systems including <b>LNG technology</b>; built understanding of electro-mechanical integration.</li>
+          <li>Root-cause analysis of component failures supporting reliability and design-improvement initiatives.</li>
+          <li>Cross-functional collaboration to translate customer pain points into technical solutions.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="role">Market Research Intern</div>
+        <div class="org">Volvo Trucks India · Bangalore</div>
+        <div class="when">Sep 2023 – Nov 2023</div>
+        <ul>
+          <li>Product viability research, route surveys, and comparative brand analysis for road-transport applications.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="shead">
+      <span class="snum mono">03</span>
+      <h2>Technical Skills</h2>
+      <span class="rt">Tools &amp; Methods</span>
+    </div>
+    <div class="skills">
+      <div class="skgrp pri">
+        <h4>CAD — Core</h4>
+        <div class="tagset">
+          <span class="core">SolidWorks</span><span>Fusion 360</span><span>Creo</span><span>AutoCAD</span><span>SpaceClaim</span>
+        </div>
+      </div>
+      <div class="skgrp pri">
+        <h4>Simulation — Core</h4>
+        <div class="tagset">
+          <span class="core">ANSYS Workbench</span><span class="core">CFD</span><span class="core">FEA / FEM</span><span>Fatigue</span><span>SimScale</span>
+        </div>
+      </div>
+      <div class="skgrp pri">
+        <h4>Design for Manufacture</h4>
+        <div class="tagset">
+          <span class="core">DFM &amp; DFA</span><span>Engineering Drawings</span><span>BOMs</span><span>Tolerancing</span>
+        </div>
+      </div>
+      <div class="skgrp">
+        <h4>Manufacturing &amp; Prototyping</h4>
+        <div class="tagset">
+          <span>Additive / 3D Printing</span><span>CNC Machining</span><span>Sheet Metal</span><span>Injection Molding</span><span>Extrusion</span>
+        </div>
+      </div>
+      <div class="skgrp">
+        <h4>AI-Enabled Engineering</h4>
+        <div class="tagset">
+          <span>AI-Assisted Design &amp; Research</span><span>Simulation Planning</span><span>Failure Analysis</span><span>Python</span>
+        </div>
+      </div>
+      <div class="skgrp">
+        <h4>Field &amp; Data</h4>
+        <div class="tagset">
+          <span>Root-Cause Analysis</span><span>Reliability</span><span>Serviceability</span><span>Power BI</span><span>Excel</span>
+        </div>
+      </div>
+      <div class="skgrp">
+        <h4>Commercial &amp; Business</h4>
+        <div class="tagset">
+          <span>Contract / AMC Management</span><span>P&amp;L Analytics</span><span>Cost-Benefit Trade-offs</span><span>Business-Driven Decisions</span><span>Vendor Benchmarking</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:13.5px;color:var(--muted)" class="mono">Currently building rendering fluency — KeyShot / Blender — to strengthen the visual-communication side of product design.</p>
+  </section>
+
+  <section id="credentials">
+    <div class="shead">
+      <span class="snum mono">04</span>
+      <h2>Education &amp; Certifications</h2>
+    </div>
+    <div class="duo">
+      <div class="card">
+        <h4>Education</h4>
+        <div class="edu-item">
+          <div class="deg">M.Tech — Mining Machinery Engineering</div>
+          <div class="row"><span class="sch">IIT (ISM) Dhanbad · 2024</span><span class="cg">9.03 CGPA</span></div>
+        </div>
+        <div class="edu-item">
+          <div class="deg">B.Tech — Production &amp; Industrial Engineering</div>
+          <div class="row"><span class="sch">MNNIT Allahabad, Prayagraj · 2021</span><span class="cg">7.24 CGPA</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Certifications</h4>
+        <div class="cert"><span>FEA with ANSYS <span class="src">· Orville Academy Plus</span></span></div>
+        <div class="cert"><span>CFD Fundamentals <span class="src">· Coursera</span></span></div>
+        <div class="cert"><span>Supervised ML: Regression &amp; Classification <span class="src">· Coursera</span></span></div>
+        <div class="cert"><span>Python for Engineering Applications <span class="src">· Coursera</span></span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <div>
+      <h3>Ready to build hardware.</h3>
+      <!-- aspirational, not a claim of current role -->
+
+      <p class="sub">Looking to move into product &amp; industrial design engineering — concept through validated, manufacturable products.</p>
+    </div>
+    <div class="flinks mono">
+      <a href="mailto:sauhar1289@gmail.com"><span class="k">EMAIL</span> sauhar1289@gmail.com</a>
+      <a href="tel:+917380342106"><span class="k">PHONE</span> +91 73803 42106</a>
+      <a href="https://www.linkedin.com/in/harish-saurabh-14269a145/" target="_blank" rel="noopener"><span class="k">LINKEDIN</span> harish-saurabh</a>
+      <span style="color:#cfd6db"><span class="k">LOCATION</span> Varanasi, India</span>
+    </div>
+    <div class="foot-note">
+      <span>© 2026 Harish Chand Saurabh</span>
+      <span>Languages: Hindi · English</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
