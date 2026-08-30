@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartilage–Menisci FEA Case Study — Harish Chand Saurabh</title>
+<meta name="description" content="FEA case study: 3D knee-joint modeling, functionally graded meshing, and isotropic vs orthotropic stress analysis of femoral, tibial, patellofemoral cartilage and menisci in ANSYS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101418;--paper:#eef1f2;--panel:#f7f9fa;--line:#c3ccd1;--line-strong:#8b979e;
+    --accent:#0e8f8f;--accent-deep:#0a5c5c;--stress:#e8552d;--muted:#5a6670;--grid:#dde3e6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Archivo',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
+  .mono{font-family:'Spline Sans Mono',monospace}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+
+  header.bar{position:sticky;top:0;z-index:50;background:rgba(238,241,242,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-strong)}
+  .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;max-width:980px}
+  .back{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--accent-deep);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+  .back:hover{color:var(--ink)}
+  .sig{font-weight:800;font-size:15px}.sig span{color:var(--accent)}
+
+  .hero{padding:56px 0 34px}
+  .eyebrow{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--accent-deep);letter-spacing:.12em;text-transform:uppercase;display:inline-flex;gap:10px;align-items:center;margin-bottom:18px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--line-strong)}
+  h1{font-size:clamp(30px,5vw,50px);line-height:1.02;font-weight:800;letter-spacing:-.02em;margin-bottom:18px}
+  .sub{font-size:clamp(15px,2vw,18px);max-width:70ch;color:#2b333b}
+  .sub b{color:var(--ink);font-weight:600}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .fact{font-family:'Spline Sans Mono',monospace;font-size:12px;background:var(--panel);border:1px solid var(--line);padding:6px 12px}
+  .fact b{color:var(--accent-deep)}
+
+  .step{padding:40px 0;border-top:1px solid var(--line-strong)}
+  .step-h{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .step-n{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--accent)}
+  .step-h h2{font-size:clamp(21px,3vw,28px);font-weight:700;letter-spacing:-.01em}
+  .step p.lead{font-size:15.5px;color:#333c44;max-width:78ch;margin:6px 0 22px}
+  figure{border:1px solid var(--line-strong);background:#fff;margin:0 0 18px}
+  figure img{width:100%;display:block}
+  figcaption{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--muted);padding:11px 16px;border-top:1px solid var(--line);background:var(--panel)}
+  figcaption b{color:var(--accent-deep)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}}
+
+  .datatable{width:100%;border-collapse:collapse;border:1px solid var(--line-strong);background:var(--panel);font-size:13.5px;margin-top:6px}
+  .datatable th,.datatable td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  .datatable th{font-family:'Spline Sans Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);background:#fff}
+  .datatable td.mono{font-family:'Spline Sans Mono',monospace;color:var(--accent-deep)}
+  .datatable tr:hover td{background:#fff}
+
+  .callout{border:1px solid var(--line-strong);border-left:3px solid var(--accent);background:var(--panel);padding:20px 24px;margin-top:8px}
+  .callout p{font-size:15px;color:#2b333b;max-width:80ch}
+  .callout b{color:var(--accent-deep)}
+  .callout .k{font-family:'Spline Sans Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);display:block;margin-bottom:8px}
+
+  footer{background:var(--ink);color:#cfd6db;padding:44px 0 34px;margin-top:44px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;max-width:980px}
+  footer a{color:#cfd6db;text-decoration:none;font-family:'Spline Sans Mono',monospace;font-size:13px}
+  footer a:hover{color:#fff}
+  .backbtn{border:1px solid #3a434d;padding:10px 18px;transition:.15s}
+  .backbtn:hover{border-color:var(--accent);color:#fff}
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto;transition:none!important}}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="back" href="index.html">← Back to portfolio</a>
+    <div class="sig">HCS<span>.</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="eyebrow mono">Case Study · FEA · Biomechanics</span>
+    <h1>Articular Cartilage &amp; Menisci<br>Stress Analysis</h1>
+    <p class="sub">Finite element study of a human knee joint under load — from <b>3D anatomical modeling</b> through <b>functionally graded meshing</b> to a <b>component-wise isotropic vs orthotropic stress comparison</b> in ANSYS. The goal: understand real stress distribution across cartilage and menisci to inform durable, tissue-mimicking implant design, with a 3D-printed FGM validation route.</p>
+    <div class="facts">
+      <span class="fact mono">Tool: <b>ANSYS 2022 R1</b></span>
+      <span class="fact mono">Nodes: <b>1,054,255</b></span>
+      <span class="fact mono">Elements: <b>675,688</b></span>
+      <span class="fact mono">Mesh: <b>1.5 mm</b></span>
+      <span class="fact mono">Models: <b>Isotropic · Orthotropic FG</b></span>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n mono">01</span><h2>3D Model Development</h2></div>
+    <p class="lead">Built the knee joint in three progressive fidelities — a simple solid model, a model separating cortical and cancellous bone, and a longitudinal functionally graded (FG) model that varies material properties through the structure to mimic real tissue behavior.</p>
+    <figure>
+      <img src="images/cartilage-01-3d-models.png" alt="Three 3D knee joint models: simple, cortical/cancellous, and functionally graded">
+      <figcaption>Model progression — <b>simple → cortical &amp; cancellous → longitudinal functionally graded</b>. Increasing anatomical and material fidelity at each stage.</figcaption>
+    </figure>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n mono">02</span><h2>Meshing</h2></div>
+    <p class="lead">Discretized the orthotropic FG model with quadrilateral and tetrahedral elements at a 1.5 mm mesh size, yielding just over a million nodes — a dense mesh chosen to resolve stress gradients across thin cartilage layers.</p>
+    <figure>
+      <img src="images/cartilage-02-meshing.png" alt="Meshed orthotropic functionally graded knee model with mesh statistics">
+      <figcaption>Orthotropic FG mesh — <b>quadrilateral + tetrahedral</b>, 1.5 mm · <b>1,054,255 nodes · 675,688 elements</b>.</figcaption>
+    </figure>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n mono">03</span><h2>Results — Isotropic vs Orthotropic</h2></div>
+    <p class="lead">Ran the loaded model under both isotropic and orthotropic material assumptions and compared von Mises stress across each component. The orthotropic FG model captures direction-dependent tissue behavior the isotropic model can't — changing where and how stress concentrates.</p>
+
+    <figure>
+      <img src="images/cartilage-03-femoral.png" alt="Femoral cartilage stress: isotropic vs orthotropic ANSYS contour plots">
+      <figcaption><b>Femoral cartilage</b> — isotropic (left) vs orthotropic (right). Localised average stress <b>3.33 → 2.958 MPa</b>.</figcaption>
+    </figure>
+
+    <div class="two">
+      <figure>
+        <img src="images/cartilage-04-menisci.png" alt="Menisci stress contour plots with node-level stress callouts">
+        <figcaption><b>Menisci</b> — node-level peak callouts; localised average <b>~13 → 9.07 MPa</b>.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/cartilage-07-menisci-detail.png" alt="Menisci min and max stress location detail">
+        <figcaption><b>Menisci detail</b> — min/max stress location mapping.</figcaption>
+      </figure>
+    </div>
+
+    <div class="two">
+      <figure>
+        <img src="images/cartilage-05-patellofemoral.png" alt="Patellofemoral cartilage stress contour plots">
+        <figcaption><b>Patellofemoral cartilage</b> — localised average <b>2 → 0.65 MPa</b>.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/cartilage-06-tibial.png" alt="Tibial cartilage stress contour plots">
+        <figcaption><b>Tibial cartilage</b> — localised average <b>3.364 → 2.64 MPa</b>.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n mono">04</span><h2>Stress Summary</h2></div>
+    <p class="lead">Localised average stress by component — the orthotropic FG model consistently redistributes and lowers localised stress relative to the isotropic assumption, a key input for material and geometry decisions in implant design.</p>
+    <table class="datatable">
+      <thead>
+        <tr><th>Component</th><th>Isotropic — localised avg</th><th>Orthotropic — localised avg</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Femoral cartilage</td><td class="mono">3.33 MPa</td><td class="mono">2.958 MPa</td></tr>
+        <tr><td>Tibial cartilage</td><td class="mono">3.364 MPa</td><td class="mono">2.64 MPa</td></tr>
+        <tr><td>Patellofemoral cartilage</td><td class="mono">2.0 MPa</td><td class="mono">0.65 MPa</td></tr>
+        <tr><td>Menisci</td><td class="mono">~13 MPa</td><td class="mono">9.07 MPa</td></tr>
+      </tbody>
+    </table>
+    <p class="mono" style="font-size:12px;color:var(--muted);margin-top:10px">Note: peak (max) values reflect mesh singularities at contact edges; localised average stress is the meaningful design figure.</p>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n mono">05</span><h2>Validation Route</h2></div>
+    <div class="callout">
+      <span class="k mono">Concept → CAD → Simulation → Prototype → Validation</span>
+      <p>To move the study beyond simulation, I developed an experimental validation protocol using <b>3D-printed cartilage models with Functionally Graded Materials</b> — physically reproducing the graded stiffness the FG model assumes, so simulated stress behavior can be checked against a real, testable specimen. This closes the loop from analysis to a buildable, validated design.</p>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="backbtn" href="index.html">← Back to full portfolio</a>
+    <a href="mailto:sauhar1289@gmail.com">sauhar1289@gmail.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
